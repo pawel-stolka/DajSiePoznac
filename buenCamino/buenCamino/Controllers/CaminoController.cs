@@ -9,35 +9,35 @@ namespace buenCamino.Controllers
 {
     public class CaminoController : Controller
     {
+        CaminoDb _db = new CaminoDb();
+
         // GET: Camino
         public ActionResult Index()
         {
-            var model = new CaminoModels();
-            model.Id = 0;
-            model.PlaceName = "Wrocław - Dworzec Autobusowy";
-            model.Time = DateTime.Now;
-            model.Altitude = 78.182;
-            model.Latitude = 51.1364865;
-            model.Longitude = 17.03885617;
-            model.Note = "Zaczynamy! :)";
-            model.PhotoPath = "";
-
+            var model = _db.CaminoPoint.ToList();
 
             return View(model);
         }
-        /*
-        <Trackpoint>
-            <Time>2015-10-09T14:37:54.000Z</Time>
-            <Position>
-              <LatitudeDegrees>51.1364865</LatitudeDegrees>
-              <LongitudeDegrees>17.03885617</LongitudeDegrees>
-            </Position>
-            <AltitudeMeters>78.182</AltitudeMeters>
-            <DistanceMeters>0.30000001192092896</DistanceMeters>
-            <HeartRateBpm>
-              <Value>149</Value>
-            </HeartRateBpm>
-            <SensorState>Present</SensorState>
-          </Trackpoint>*/
+
+        public ActionResult GetJson()//int id)
+        {
+            //var model = _db.CaminoPoint.ToList();
+            var model = from p in _db.CaminoPoint
+                            //orderby p.Time
+                        where p.Id == 0 //id
+                        select p;
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_db != null)
+            {
+                _db.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
     }
 }
