@@ -36,3 +36,8 @@ textarea {
     -webkit-user-select: none; 
     background-color: white; 
 }  
+
+.info {
+    color: grey;
+    font-size: 14px;
+}

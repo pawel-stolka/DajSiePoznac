@@ -1,50 +1,75 @@
 ﻿var geoData = [];
+var _zoom;
 
 $(function getJsonFromDb() {
     var id = 1;
+    _zoom = 5;
+
+    FillArray();
 
     $("#btnJson").click(function () {
-        FillArray(id);
-        TryToInit();
+        
+        //TryToInit();
     });
 
     $("#showJson").click(function () {
+        CheckGeoDataIsFilled();
         
-        ShowGeoData();
     });
 
     $("#JsonAlert").click(function () {
-        alert(geoData.length);
+        $("#jsonPlace").html(geoData.length);
     });
+
+    (GetTableRowIndex());
 
 });
 
 function TryToInit()
 {
     if (geoData.length > 0) {
-        InitMap();
+        $("#jsonPlace").html("Data available!");
+        InitMap(geoData[0].Latitude, geoData[0].Longitude);
     }
-    //else
-      //  alert("sorry...fill in the array");
+    else {
+        while (geoData.length == 0) {
+            $("#jsonPlace").html("Not yet...");
+        }
+        $("#jsonPlace").html("Data available!");
+        InitMap(geoData[0].Latitude, geoData[0].Longitude);
+        //TryToInit();
+    }
+
 }
 //alert(geoData[1]);
 
-function FillArray(id) {
+function CheckGeoDataIsFilled() {
+    if (geoData.length > 0) {
+        $("#jsonPlace").html("Pushed to array");
+        InitMap(geoData[0].Latitude, geoData[0].Longitude);
+    }
+    else {
+        $("#jsonPlace").html("Not yet...");
+    }
+}
+
+function FillArray() {
+    
     $.getJSON("/forTesting/GiveMeJson", null, function (data) {
 
         $.each(data, function (index, value) {
             geoData.push(value);
         });
     });
-    $("#jsonPlace").html("Pushed to array");
+    
+    //TryToInit();
 }
 
-function InitMap() {
+function InitMap(startLat, startLon) {
     google.maps.visualRefresh = true;
-    var StartCenter = new google.maps.LatLng(geoData[0].Latitude, geoData[0].Longitude);
-
+    var StartCenter = new google.maps.LatLng(startLat, startLon);
     var mapOptions = {
-        zoom: 5,
+        zoom: _zoom,
         center: StartCenter,
         mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
     };
@@ -63,12 +88,32 @@ function InitMap() {
 
     });
 
+    map.addListener('mousemove', function (e) {
+        _zoom = 5;
+        var myLatLng = e.latLng;
+        var lat = myLatLng.lat();
+        var lng = myLatLng.lng();
+        $("#moveLat").html(lat);
+        $("#moveLon").html(lng);
+        //var pos = e.LatLng.lat();
+        //alert(pos);
+        //$("#posLat").text(pos);
+        //placeMarkerAndPanTo(e.latLng, map);
+        //map.panTo(e.latLng);
+    });
+
     map.addListener('click', function (event) {
         var myLatLng = event.latLng;
         var lat = myLatLng.lat();
         var lng = myLatLng.lng();
         $("#posLat").html(lat);
         $("#posLon").html(lng);
+        //clearing
+        $("#moveLat").html("");
+        $("#moveLon").html("");
+        localStorage.setItem("_tempLat", lat);//.replace(".",","));
+        localStorage.setItem("_tempLon", lng);
+        alert(localStorage.getItem("_tempLat") + " " + localStorage.getItem("_tempLon"));
     })
 
     //map.addListener('mousemove', function (e) {
