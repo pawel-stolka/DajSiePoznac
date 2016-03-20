@@ -34,23 +34,15 @@
                 <label for="exampleInputName2">Note</label>
                 <input type="text" class="form-control" id="input_Note" placeholder="What's up there?'">
             </div>
-            <button type="submit" class="btn btn-default">Send invitation</button>
-            <span class="btn btn-default">
-                    @Html.ActionLink("Create New..", "Create")
-                </span> 
+
+            <div class="form-group">
+                <br/>
+                @Html.ActionLink("Create new point..", "Create")
+            </div>
+            
+           
 
         </form>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-                @*<input type="button" id="btnCreate" value="Create New.." />*@
-                <span class="btn btn-default">
-                    @Html.ActionLink("Create New..", "Create")
-                </span> 
-            </div>
-        </div>
         
     </div>
 
@@ -58,8 +50,6 @@
 
     <div class="col-md-4">
         <div class="row">
-
-            <input type="button" id="btnJson" value="Pchnij dżejsona" />
 
             <input type="button" id="showJson" value="Pokaż dane" />
 
@@ -139,12 +129,15 @@
     <section class="scripts">
         
         <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
-        <script src="~/Scripts/JsonGMap.js"></script>
+        <script src="~/Scripts/BasicFunctions.js"></script>
+
+
+        @*<script src="~/Scripts/JsonGMap.js"></script>
         <script src="~/Scripts/GeoArray.js"></script>
-        @*<script src="~/Scripts/Maps.js"></script>*@
         
-        <script src="~/Scripts/Behaviour.js"></script>
+        <script src="~/Scripts/Behaviour.js"></script>*@
         
+    @*<script src="~/Scripts/Maps.js"></script>*@
         @*<script src="~/Scripts/JSON2.js"></script>
         <script src="~/Scripts/Maps.js"></script>*@
         
